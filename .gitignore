@@ -53,3 +53,5 @@ app/static/uploads/*
 !app/static/uploads/assignments/.gitkeep
 !app/static/uploads/submissions/.gitkeep
 !app/static/uploads/challenges/.gitkeep
+
+.md
