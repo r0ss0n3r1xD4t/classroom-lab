@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Chỉnh sửa thông tin{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header bg-warning">
+                    <h4 class="mb-0">✏️ Chỉnh sửa thông tin</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username:</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="username" 
+                                   value="{{ user.username }}" 
+                                   disabled>
+                            <small class="text-muted">Username không thể thay đổi</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Họ và tên: *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="fullname" 
+                                   name="fullname" 
+                                   value="{{ user.fullname }}" 
+                                   {% if current_user.is_student() %}readonly{% endif %}
+                                   required>
+                            {% if current_user.is_student() %}
+                            <small class="text-muted">Sinh viên không thể thay đổi tên</small>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email: *</label>
+                            <input type="email" 
+                                   class="form-control" 
+                                   id="email" 
+                                   name="email" 
+                                   value="{{ user.email }}" 
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số điện thoại:</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="phone" 
+                                   name="phone" 
+                                   value="{{ user.phone or '' }}"
+                                   placeholder="Nhập số điện thoại">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu mới:</label>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="password" 
+                                   name="password"
+                                   placeholder="Để trống nếu không đổi mật khẩu">
+                            <small class="text-muted">Để trống nếu không muốn thay đổi mật khẩu</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Vai trò:</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   value="{% if user.role == 'teacher' %}Giáo viên{% else %}Sinh viên{% endif %}" 
+                                   disabled>
+                            <small class="text-muted">Vai trò không thể thay đổi</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('user.detail', user_id=user.id) }}" 
+                               class="btn btn-secondary">
+                                ❌ Hủy
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                💾 Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

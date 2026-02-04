@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Đăng ký{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-center mb-4">📝 Đăng ký tài khoản</h3>
+                    
+                    <form method="POST" action="{{ url_for('auth.register') }}">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên đăng nhập *</label>
+                            <input type="text" class="form-control" id="username" name="username" 
+                                   placeholder="Nhập tên đăng nhập" required>
+                            <div class="form-text">Tên đăng nhập phải là duy nhất</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu *</label>
+                            <input type="password" class="form-control" id="password" name="password" 
+                                   placeholder="Nhập mật khẩu" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Họ và tên *</label>
+                            <input type="text" class="form-control" id="fullname" name="fullname" 
+                                   placeholder="Nhập họ và tên đầy đủ" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="email" name="email" 
+                                   placeholder="example@email.com" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="phone" name="phone" 
+                                   placeholder="0123456789">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Vai trò *</label>
+                            <select class="form-select" id="role" name="role" required>
+                                <option value="student" selected>Sinh viên</option>
+                                <option value="teacher">Giáo viên</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Đăng ký</button>
+                        </div>
+                    </form>
+                    
+                    <hr class="my-4">
+                    
+                    <p class="text-center mb-0">
+                        Đã có tài khoản? 
+                        <a href="{{ url_for('auth.login') }}">Đăng nhập ngay</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

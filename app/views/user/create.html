@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Tạo người dùng mới{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">➕ Tạo người dùng mới</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username: *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="username" 
+                                   name="username"
+                                   placeholder="Nhập username"
+                                   required>
+                            <small class="text-muted">Username sẽ dùng để đăng nhập</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu: *</label>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="password" 
+                                   name="password"
+                                   placeholder="Nhập mật khẩu"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Họ và tên: *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="fullname" 
+                                   name="fullname"
+                                   placeholder="Nhập họ và tên đầy đủ"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email: *</label>
+                            <input type="email" 
+                                   class="form-control" 
+                                   id="email" 
+                                   name="email"
+                                   placeholder="example@email.com"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số điện thoại:</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="phone" 
+                                   name="phone"
+                                   placeholder="Nhập số điện thoại (không bắt buộc)">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Vai trò: *</label>
+                            <select class="form-select" 
+                                    id="role" 
+                                    name="role" 
+                                    required>
+                                <option value="">-- Chọn vai trò --</option>
+                                <option value="student">Sinh viên</option>
+                                <option value="teacher">Giáo viên</option>
+                            </select>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>📌 Lưu ý:</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Các trường có dấu (*) là bắt buộc</li>
+                                <li>Username và Email phải là duy nhất</li>
+                                <li>Mật khẩu sẽ được mã hóa an toàn</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('user.list_users') }}" 
+                               class="btn btn-secondary">
+                                ❌ Hủy
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                ✅ Tạo người dùng
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

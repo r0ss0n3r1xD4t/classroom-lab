@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Đăng nhập{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-center mb-4">🔐 Đăng nhập</h3>
+                    
+                    <form method="POST" action="{{ url_for('auth.login') }}">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="username" name="username" 
+                                   placeholder="Nhập tên đăng nhập" required autofocus>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <input type="password" class="form-control" id="password" name="password" 
+                                   placeholder="Nhập mật khẩu" required>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                        </div>
+                    </form>
+                    
+                    <hr class="my-4">
+                    
+                    <p class="text-center mb-0">
+                        Chưa có tài khoản? 
+                        <a href="{{ url_for('auth.register') }}">Đăng ký ngay</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

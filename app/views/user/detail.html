@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Chi tiết người dùng{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>👤 Chi tiết người dùng</h2>
+        <a href="{{ url_for('user.list_users') }}" class="btn btn-secondary">
+            ⬅️ Quay lại
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Thông tin cá nhân</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th width="30%">ID:</th>
+                                <td>{{ user.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Username:</th>
+                                <td>
+                                    <strong>{{ user.username }}</strong>
+                                    {% if user.id == current_user.id %}
+                                    <span class="badge bg-info ms-2">Bạn</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Họ và tên:</th>
+                                <td>{{ user.fullname }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>
+                                    <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Số điện thoại:</th>
+                                <td>{{ user.phone or 'Chưa cập nhật' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Vai trò:</th>
+                                <td>
+                                    {% if user.role == 'teacher' %}
+                                    <span class="badge bg-primary">Giáo viên</span>
+                                    {% else %}
+                                    <span class="badge bg-success">Sinh viên</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Ngày tạo:</th>
+                                <td>{{ user.created_at.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="mt-4">
+                        {% if current_user.is_teacher() or current_user.id == user.id %}
+                        <a href="{{ url_for('user.edit', user_id=user.id) }}" 
+                           class="btn btn-warning">
+                            ✏️ Chỉnh sửa thông tin
+                        </a>
+                        {% endif %}
+                        
+                        {% if current_user.is_teacher() and current_user.id != user.id %}
+                        <form method="POST" 
+                              action="{{ url_for('user.delete', user_id=user.id) }}" 
+                              style="display: inline;"
+                              onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này?');">
+                            <button type="submit" class="btn btn-danger">
+                                🗑️ Xóa người dùng
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
