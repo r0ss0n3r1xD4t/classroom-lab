@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Chi tiết Challenge{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">📋 {{ challenge.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">{{ challenge.description or 'Không có mô tả' }}</p>
+                    
+                    {% if challenge.hint %}
+                    <div class="alert alert-warning mt-3">
+                        <h5 class="mb-2">💡 Gợi ý cho sinh viên:</h5>
+                        <p class="mb-0">{{ challenge.hint }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <p class="mb-1"><small><strong>Giáo viên:</strong> {{ challenge.teacher.fullname }}</small></p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="mb-1"><small><strong>Ngày tạo:</strong> {{ challenge.created_at.strftime('%d/%m/%Y %H:%M') }}</small></p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="mb-1"><small><strong>Trạng thái:</strong> 
+                                {% if challenge.is_active %}
+                                <span class="badge bg-success">Đang hoạt động</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Đã vô hiệu hóa</span>
+                                {% endif %}
+                            </small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">🔑 Đáp án (Chỉ giáo viên thấy)</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="text-danger mb-2">{{ challenge.get_answer() }}</h3>
+                    <p class="mb-0 text-muted">Đáp án được lấy từ tên file (không có phần mở rộng .txt)</p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">📖 Nội dung file</h5>
+                </div>
+                <div class="card-body">
+                    <div class="bg-light p-4 rounded" style="white-space: pre-wrap; font-family: 'Courier New', monospace; line-height: 1.8;">{{ content }}</div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="{{ url_for('challenge.list_challenges') }}" class="btn btn-primary">
+                    ⬅️ Quay lại danh sách
+                </a>
+                {% if challenge.is_active %}
+                <form method="POST" action="{{ url_for('challenge.deactivate', challenge_id=challenge.id) }}" style="display: inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type="submit" class="btn btn-warning" onclick="return confirm('Bạn có chắc muốn vô hiệu hóa challenge này?')">
+                        🚫 Vô hiệu hóa
+                    </button>
+                </form>
+                {% endif %}
+                <form method="POST" action="{{ url_for('challenge.delete', challenge_id=challenge.id) }}" style="display: inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa challenge này? Hành động này không thể hoàn tác!')">
+                        🗑️ Xóa
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -3,7 +3,6 @@ from flask import redirect, url_for, flash, abort
 from flask_login import current_user
 
 def teacher_required(f):
-    """Decorator yêu cầu user phải là giáo viên"""
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
@@ -16,7 +15,6 @@ def teacher_required(f):
     return decorated_function
 
 def student_required(f):
-    """Decorator yêu cầu user phải là sinh viên"""
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:

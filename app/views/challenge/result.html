@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Kết quả Challenge{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            {% if result.is_correct %}
+            <div class="card border-success mb-4">
+                <div class="card-header bg-success text-white text-center">
+                    <h2 class="mb-0">🎉 Chúc mừng! Bạn đã trả lời đúng!</h2>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <div style="font-size: 100px;">✅</div>
+                    </div>
+                    
+                    <h4 class="mb-3">Challenge: <strong>{{ result.challenge_title }}</strong></h4>
+                    
+                    <div class="alert alert-success">
+                        <h5>Đáp án của bạn: <strong>{{ result.user_answer }}</strong></h5>
+                        <h5>Đáp án đúng: <strong>{{ result.correct_answer }}</strong></h5>
+                    </div>
+                    
+                    <p class="lead">Bạn đã giải được câu đố! Xuất sắc! 🌟</p>
+                </div>
+            </div>
+            
+            {% if content %}
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">📖 Nội dung đầy đủ - Phần thưởng của bạn!</h5>
+                </div>
+                <div class="card-body">
+                    <div class="bg-light p-4 rounded" style="white-space: pre-wrap; font-family: 'Courier New', monospace; line-height: 1.8;">{{ content }}</div>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% else %}
+            <div class="card border-danger mb-4">
+                <div class="card-header bg-danger text-white text-center">
+                    <h2 class="mb-0">😢 Rất tiếc! Câu trả lời chưa đúng</h2>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <div style="font-size: 100px;">❌</div>
+                    </div>
+                    
+                    <h4 class="mb-3">Challenge: <strong>{{ result.challenge_title }}</strong></h4>
+                    
+                    <div class="alert alert-danger">
+                        <h5>Đáp án của bạn: <strong>{{ result.user_answer }}</strong></h5>
+                      
+                    </div>
+                    
+                    <p class="lead">Đừng nản lòng! Hãy thử lại hoặc chơi các challenge khác nhé! 💪</p>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <h5 class="text-warning">💡 Mẹo nhỏ</h5>
+                    <p class="mb-0 text-muted">
+                        Đọc kỹ gợi ý. Đáp án là tên của tác phẩm (không dấu, các từ cách nhau bởi khoảng trắng).
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="text-center">
+                <a href="{{ url_for('challenge.list_challenges') }}" class="btn btn-primary btn-lg">
+                    🎮 Xem thêm Challenge khác
+                </a>
+                {% if not result.is_correct %}
+                <a href="{{ url_for('challenge.play', challenge_id=result.challenge_id) }}" class="btn btn-warning btn-lg">
+                    🔄 Thử lại
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .card {
+        animation: fadeInDown 0.5s ease-out;
+    }
+</style>
+{% endblock %}

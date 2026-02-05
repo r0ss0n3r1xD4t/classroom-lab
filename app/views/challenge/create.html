@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Tạo Challenge{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">🎮 Tạo Challenge mới</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Tiêu đề Challenge <span class="text-danger">*</span></label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="title" 
+                                   name="title" 
+                                   required
+                                   placeholder="Ví dụ: Đoán bài thơ">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Mô tả</label>
+                            <textarea class="form-control" 
+                                      id="description" 
+                                      name="description" 
+                                      rows="3"
+                                      placeholder="Mô tả về challenge này..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="hint" class="form-label">Gợi ý cho sinh viên</label>
+                            <textarea class="form-control" 
+                                      id="hint" 
+                                      name="hint" 
+                                      rows="2"
+                                      placeholder="Ví dụ: Đây là bài thơ nổi tiếng của Xuân Diệu..."></textarea>
+                            <small class="text-muted">Gợi ý sẽ giúp sinh viên dễ đoán hơn</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="file" class="form-label">File Challenge (.txt) <span class="text-danger">*</span></label>
+                            <input type="file" 
+                                   class="form-control" 
+                                   id="file" 
+                                   name="file"
+                                   required
+                                   accept=".txt">
+                            <small class="text-muted text-danger">
+                                <strong>⚠️ QUAN TRỌNG:</strong> Tên file sẽ là đáp án!<br>
+                                Ví dụ: File "voi_va.txt" → Đáp án là "voi_va"
+                            </small>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>💡 Hướng dẫn tạo Challenge:</strong>
+                            <ol class="mb-0">
+                                <li>Tạo file .txt chứa nội dung (bài thơ, đoạn văn, câu đố...)</li>
+                                <li>Đặt tên file chính là đáp án (ví dụ: mua_xuan.txt)</li>
+                                <li>Upload file lên hệ thống</li>
+                                <li>Sinh viên sẽ đọc nội dung và đoán tên file</li>
+                                <li><strong>Đáp án không được lưu trong database</strong>, chỉ dựa vào tên file</li>
+                            </ol>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <strong>⚠️ Lưu ý:</strong>
+                            <ul class="mb-0">
+                                <li>Chỉ chấp nhận file .txt</li>
+                                <li>Tên file không nên chứa ký tự đặc biệt phức tạp</li>
+                                <li>Sinh viên nhập đáp án không phân biệt hoa thường</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                ✅ Tạo Challenge
+                            </button>
+                            <a href="{{ url_for('challenge.list_challenges') }}" class="btn btn-secondary">
+                                ❌ Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

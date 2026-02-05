@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Upload bài tập{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">📤 Upload bài tập mới</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Tiêu đề bài tập <span class="text-danger">*</span></label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="title" 
+                                   name="title" 
+                                   required
+                                   placeholder="Ví dụ: Bài tập tuần 3 - HTML/CSS">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Mô tả</label>
+                            <textarea class="form-control" 
+                                      id="description" 
+                                      name="description" 
+                                      rows="4"
+                                      placeholder="Mô tả chi tiết về bài tập..."></textarea>
+                            <small class="text-muted">Bạn có thể mô tả yêu cầu, nội dung bài tập...</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deadline" class="form-label">Hạn nộp bài</label>
+                            <input type="datetime-local" 
+                                   class="form-control" 
+                                   id="deadline" 
+                                   name="deadline">
+                            <small class="text-muted">Để trống nếu không có hạn nộp</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="file" class="form-label">File bài tập (nếu có)</label>
+                            <input type="file" 
+                                   class="form-control" 
+                                   id="file" 
+                                   name="file"
+                                   accept=".txt,.pdf,.doc,.docx,.zip">
+                            <small class="text-muted">
+                                Các định dạng được phép: TXT, PDF, DOC, DOCX, ZIP (tối đa 16MB)
+                            </small>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>💡 Lưu ý:</strong>
+                            <ul class="mb-0">
+                                <li>Tiêu đề là bắt buộc</li>
+                                <li>File đính kèm là tùy chọn</li>
+                                <li>Sinh viên sẽ thấy bài tập này và có thể download file</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                ✅ Upload bài tập
+                            </button>
+                            <a href="{{ url_for('assignment.list_assignments') }}" class="btn btn-secondary">
+                                ❌ Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

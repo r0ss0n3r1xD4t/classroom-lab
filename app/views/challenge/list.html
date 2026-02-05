@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Danh sách Challenge{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🎮 Danh sách Challenge (Giải đố)</h2>
+        {% if current_user.is_teacher() %}
+        <a href="{{ url_for('challenge.create') }}" class="btn btn-primary">
+            ➕ Tạo challenge mới
+        </a>
+        {% endif %}
+    </div>
+
+    {% if current_user.is_student() %}
+    <div class="alert alert-info">
+        <strong>💡 Hướng dẫn:</strong> Đọc nội dung và đoán tên của nó. Đáp án là tên file (không có .txt)
+    </div>
+    {% endif %}
+
+    {% if challenges %}
+    <div class="row">
+        {% for challenge in challenges %}
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 {% if not challenge.is_active %}border-secondary{% endif %}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title">{{ challenge.title }}</h5>
+                        {% if not challenge.is_active %}
+                        <span class="badge bg-secondary">Đã vô hiệu hóa</span>
+                        {% else %}
+                        <span class="badge bg-success">Đang hoạt động</span>
+                        {% endif %}
+                    </div>
+                    
+                    <p class="card-text text-muted">
+                        {{ challenge.description or 'Không có mô tả' }}
+                    </p>
+                    
+                    {% if challenge.hint %}
+                    <div class="alert alert-warning py-2">
+                        <strong>💡 Gợi ý:</strong> {{ challenge.hint }}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mb-2">
+                        <small class="text-muted">
+                            <strong>Giáo viên:</strong> {{ challenge.teacher.fullname }}<br>
+                            <strong>Ngày tạo:</strong> {{ challenge.created_at.strftime('%d/%m/%Y %H:%M') }}
+                        </small>
+                    </div>
+                    
+                    <div class="d-flex gap-2 flex-wrap">
+                        {% if current_user.is_student() and challenge.is_active %}
+                        <a href="{{ url_for('challenge.play', challenge_id=challenge.id) }}" 
+                           class="btn btn-success">
+                            🎮 Chơi ngay
+                        </a>
+                        {% endif %}
+                        
+                        {% if current_user.is_teacher() %}
+                        <a href="{{ url_for('challenge.view', challenge_id=challenge.id) }}" 
+                           class="btn btn-info btn-sm">
+                            👁️ Xem & Đáp án
+                        </a>
+                        
+                        {% if challenge.is_active %}
+                        <form method="POST" 
+                              action="{{ url_for('challenge.deactivate', challenge_id=challenge.id) }}" 
+                              class="d-inline">
+                            <button type="submit" class="btn btn-warning btn-sm">
+                                🔒 Vô hiệu hóa
+                            </button>
+                        </form>
+                        {% endif %}
+                        
+                        <form method="POST" 
+                              action="{{ url_for('challenge.delete', challenge_id=challenge.id) }}" 
+                              class="d-inline"
+                              onsubmit="return confirm('Bạn có chắc muốn xóa challenge này?')">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                🗑️ Xóa
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <strong>Thông báo:</strong> Chưa có challenge nào.
+        {% if current_user.is_teacher() %}
+        <a href="{{ url_for('challenge.create') }}">Tạo challenge đầu tiên</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

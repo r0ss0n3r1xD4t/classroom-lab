@@ -12,23 +12,19 @@ class User(UserMixin, db.Model):
     fullname = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone = db.Column(db.String(20))
-    role = db.Column(db.String(20), nullable=False)  # 'teacher' or 'student'
+    role = db.Column(db.String(20), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     def set_password(self, password):
-        """Hash password trước khi lưu vào database"""
         self.password = generate_password_hash(password)
     
     def check_password(self, password):
-        """Kiểm tra password có đúng không"""
         return check_password_hash(self.password, password)
     
     def is_teacher(self):
-        """Kiểm tra có phải giáo viên không"""
         return self.role == 'teacher'
     
     def is_student(self):
-        """Kiểm tra có phải sinh viên không"""
         return self.role == 'student'
     
     def __repr__(self):

@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Danh sách bài nộp{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Thông tin bài tập -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">📚 {{ assignment.title }}</h4>
+        </div>
+        <div class="card-body">
+            <p class="mb-2">{{ assignment.description or 'Không có mô tả' }}</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-1"><strong>Ngày giao:</strong> {{ assignment.created_at.strftime('%d/%m/%Y %H:%M') }}</p>
+                    {% if assignment.deadline %}
+                    <p class="mb-1">
+                        <strong>Hạn nộp:</strong> 
+                        <span class="{% if assignment.is_overdue() %}text-danger{% else %}text-success{% endif %}">
+                            {{ assignment.deadline.strftime('%d/%m/%Y %H:%M') }}
+                        </span>
+                    </p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {% if assignment.has_file() %}
+                    <p class="mb-1">
+                        <strong>File bài tập:</strong> 
+                        <a href="{{ url_for('assignment.download_assignment', assignment_id=assignment.id) }}" 
+                           class="btn btn-sm btn-outline-primary">
+                            ⬇️ Download
+                        </a>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thống kê -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-primary mb-0">{{ stats.total_students }}</h3>
+                    <p class="text-muted mb-0">Tổng sinh viên</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-success mb-0">{{ stats.submitted_count }}</h3>
+                    <p class="text-muted mb-0">Đã nộp bài</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-danger mb-0">{{ stats.not_submitted_count }}</h3>
+                    <p class="text-muted mb-0">Chưa nộp bài</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Danh sách bài nộp -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">📋 Danh sách bài nộp ({{ submissions|length }} bài)</h5>
+        </div>
+        <div class="card-body">
+            {% if submissions %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>STT</th>
+                            <th>Sinh viên</th>
+                            <th>Email</th>
+                            <th>File nộp</th>
+                            <th>Ghi chú</th>
+                            <th>Thời gian nộp</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for submission in submissions %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                <strong>{{ submission.student.fullname }}</strong><br>
+                                <small class="text-muted">{{ submission.student.username }}</small>
+                            </td>
+                            <td>{{ submission.student.email }}</td>
+                            <td>
+                                <span class="badge bg-info">{{ submission.filename }}</span>
+                            </td>
+                            <td>
+                                {% if submission.note %}
+                                <small>{{ submission.note }}</small>
+                                {% else %}
+                                <small class="text-muted">-</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <small>{{ submission.submitted_at.strftime('%d/%m/%Y %H:%M') }}</small>
+                            </td>
+                            <td>
+                                {% if submission.is_late() %}
+                                <span class="badge bg-danger">Nộp muộn</span>
+                                {% else %}
+                                <span class="badge bg-success">Đúng hạn</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('assignment.download_submission', submission_id=submission.id) }}" 
+                                   class="btn btn-sm btn-primary">
+                                    ⬇️ Download
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info mb-0">
+                <strong>Thông báo:</strong> Chưa có sinh viên nào nộp bài.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="{{ url_for('assignment.list_assignments') }}" class="btn btn-secondary">
+            ⬅️ Quay lại danh sách bài tập
+        </a>
+    </div>
+</div>
+{% endblock %}

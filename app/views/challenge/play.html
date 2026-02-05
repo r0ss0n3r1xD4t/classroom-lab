@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Chơi Challenge{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">🎮 {{ challenge.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">{{ challenge.description or 'Không có mô tả' }}</p>
+                    
+                    {% if challenge.hint %}
+                    <div class="alert alert-warning mt-3">
+                        <h5 class="mb-2">💡 Gợi ý:</h5>
+                        <p class="mb-0">{{ challenge.hint }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <p class="mb-1"><small><strong>Giáo viên:</strong> {{ challenge.teacher.fullname }}</small></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><small><strong>Ngày tạo:</strong> {{ challenge.created_at.strftime('%d/%m/%Y %H:%M') }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">🎯 Nhập đáp án của bạn</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <div class="mb-3">
+                            <label for="answer" class="form-label">Đáp án của bạn là gì?</label>
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="answer" 
+                                   name="answer" 
+                                   required
+                                   placeholder="Nhập tên của bài thơ/văn..."
+                                   autofocus>
+                            <small class="text-muted">Không phân biệt hoa thường. Nhập tên không dấu, các từ cách nhau bởi khoảng trắng.</small>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>📝 Lưu ý:</strong> Hãy suy nghĩ dựa trên gợi ý! Khi trả lời đúng, bạn sẽ được xem nội dung đầy đủ.
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                ✅ Kiểm tra đáp án
+                            </button>
+                            <a href="{{ url_for('challenge.list_challenges') }}" class="btn btn-secondary btn-lg">
+                                ❌ Bỏ qua
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

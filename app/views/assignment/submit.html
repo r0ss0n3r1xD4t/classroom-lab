@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Nộp bài{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Thông tin bài tập -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">📚 Thông tin bài tập</h4>
+                </div>
+                <div class="card-body">
+                    <h5>{{ assignment.title }}</h5>
+                    <p class="text-muted">{{ assignment.description or 'Không có mô tả' }}</p>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1">
+                                <strong>Giáo viên:</strong> {{ assignment.teacher.fullname }}
+                            </p>
+                            <p class="mb-1">
+                                <strong>Ngày giao:</strong> {{ assignment.created_at.strftime('%d/%m/%Y %H:%M') }}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            {% if assignment.deadline %}
+                            <p class="mb-1">
+                                <strong>Hạn nộp:</strong> 
+                                <span class="{% if assignment.is_overdue() %}text-danger{% else %}text-success{% endif %}">
+                                    {{ assignment.deadline.strftime('%d/%m/%Y %H:%M') }}
+                                </span>
+                            </p>
+                            {% endif %}
+                            
+                            {% if assignment.has_file() %}
+                            <p class="mb-1">
+                                <strong>File đính kèm:</strong> 
+                                <a href="{{ url_for('assignment.download_assignment', assignment_id=assignment.id) }}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    ⬇️ Download
+                                </a>
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if assignment.is_overdue() %}
+                    <div class="alert alert-danger mt-3 mb-0">
+                        <strong>⚠️ Cảnh báo:</strong> Bài tập này đã quá hạn nộp!
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Form nộp bài -->
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">📤 Nộp bài của bạn</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="file" class="form-label">
+                                File bài làm <span class="text-danger">*</span>
+                            </label>
+                            <input type="file" 
+                                   class="form-control" 
+                                   id="file" 
+                                   name="file"
+                                   required
+                                   accept=".txt,.pdf,.doc,.docx,.zip">
+                            <small class="text-muted">
+                                Các định dạng được phép: TXT, PDF, DOC, DOCX, ZIP (tối đa 16MB)
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="note" class="form-label">Ghi chú (tùy chọn)</label>
+                            <textarea class="form-control" 
+                                      id="note" 
+                                      name="note" 
+                                      rows="3"
+                                      placeholder="Bạn có thể thêm ghi chú về bài làm của mình..."></textarea>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <strong>⚠️ Lưu ý quan trọng:</strong>
+                            <ul class="mb-0">
+                                <li>Bạn chỉ có thể nộp bài <strong>một lần duy nhất</strong></li>
+                                <li>Không thể chỉnh sửa hoặc nộp lại sau khi đã nộp</li>
+                                <li>Hãy kiểm tra kỹ file trước khi nộp</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                ✅ Nộp bài
+                            </button>
+                            <a href="{{ url_for('assignment.list_assignments') }}" class="btn btn-secondary">
+                                ❌ Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
