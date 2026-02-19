@@ -19,7 +19,6 @@ classroom-lab/
 │   ├── services/          # Business logic
 │   ├── utils/             # Helper functions
 │   └── static/            # CSS, JS, uploads
-├── tests/                 # Unit tests
 ├── instance/              # Config & database
 └── run.py                 # Entry point
 ```
