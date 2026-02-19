@@ -78,6 +78,7 @@
                               action="{{ url_for('assignment.delete', assignment_id=assignment.id) }}" 
                               class="d-inline"
                               onsubmit="return confirm('Bạn có chắc muốn xóa bài tập này?')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                             <button type="submit" class="btn btn-sm btn-danger">
                                 🗑️ Xóa
                             </button>

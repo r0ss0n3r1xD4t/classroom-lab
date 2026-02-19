@@ -69,6 +69,7 @@
                         <form method="POST" 
                               action="{{ url_for('challenge.deactivate', challenge_id=challenge.id) }}" 
                               class="d-inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                             <button type="submit" class="btn btn-warning btn-sm">
                                 🔒 Vô hiệu hóa
                             </button>
@@ -78,8 +79,7 @@
                         <form method="POST" 
                               action="{{ url_for('challenge.delete', challenge_id=challenge.id) }}" 
                               class="d-inline"
-                              onsubmit="return confirm('Bạn có chắc muốn xóa challenge này?')">
-                            <button type="submit" class="btn btn-danger btn-sm">
+                              onsubmit="return confirm('Bạn có chắc muốn xóa challenge này?')">                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>                            <button type="submit" class="btn btn-danger btn-sm">
                                 🗑️ Xóa
                             </button>
                         </form>

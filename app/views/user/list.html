@@ -67,6 +67,7 @@
                                       action="{{ url_for('user.delete', user_id=user.id) }}" 
                                       style="display: inline;"
                                       onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này?');">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                     <button type="submit" class="btn btn-sm btn-danger">
                                         🗑️ Xóa
                                     </button>

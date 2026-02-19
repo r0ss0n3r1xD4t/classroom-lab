@@ -8,7 +8,6 @@ user_bp = Blueprint('user', __name__, url_prefix='/users')
 
 @user_bp.route('/')
 @login_required
-@teacher_required
 def list_users():
     users = UserService.get_all_users()
     return render_template('user/list.html', users=users)
@@ -16,7 +15,6 @@ def list_users():
 
 @user_bp.route('/<int:user_id>')
 @login_required
-@teacher_required
 def detail(user_id):
     user = UserService.get_user_by_id(user_id)
     if not user:
